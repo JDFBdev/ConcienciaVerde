@@ -1,26 +1,39 @@
 import React, { useState } from 'react';
 import s from './Home.module.css';
-import logo from '../img/logo.png';
-import circle from '../img/circle.png';
+import logo from '../../img/logo.png';
+import circle from '../../img/circle.png';
 import CountUp from 'react-countup';
 import { useModal } from 'react-hooks-use-modal';
-import Transition from './Transition/Transition';
+import Transition from '../Transition/Transition';
+import { BsXSquareFill } from 'react-icons/bs';
+import {useNavigate} from 'react-router-dom';
+import toast from "react-hot-toast";
 
 export default function Home(){
     const [fachas, setFachas] = useState([{name: 'Maga', kg: 22},{name: 'Juan', kg: 16},{name: 'Santi', kg: 47},{name: 'Fran', kg: 469}]);
     const [selected, setSelected] = useState(0);
-    const [Modal, open, close] = useModal('root', {
-        preventScroll: true,
-        closeOnOverlayClick: true
-    });
+    const [newFacha, setNewFacha] = useState('');
+    const Navigate = useNavigate();
+
+    const [ModalFacha, openFacha, closeFacha] = useModal('root', {preventScroll: true,closeOnOverlayClick: true});
+    const [ModalNew, openNew, closeNew] = useModal('root', {preventScroll: true, closeOnOverlayClick: true});
 
     const handleDate = function(){
         let today = new Date();
         return today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
     }
+
+    const handleSubmit = function(e){
+        e.preventDefault();
+        setFachas(prev=> [...prev, {name: newFacha, kg: 0}]);
+        closeNew();
+        toast.success(`${newFacha} agregadx`);
+        setNewFacha('');
+    }
     
     return(
         <div className={s.container}>
+
             <div className={s.banner}>
                 <div className={s.circle1}/>
                 <div className={s.circle2}/>
@@ -31,6 +44,7 @@ export default function Home(){
                     </div>
                 </div>
             </div>
+
             <div className={s.dataContainer}>
 
                 <div className={s.stats}>
@@ -57,7 +71,7 @@ export default function Home(){
                         {
                             fachas?.map((f,i) => {
                                 return (
-                                    <div className={s.facha} onClick={()=>{setSelected(i); open();}}>
+                                    <div className={s.facha} onClick={()=>{setSelected(i); openFacha();}}>
                                         <p className={s.fachaName}>{f.name}</p>
                                         <p className={s.fachaKg}>{f.kg} Kg</p>
                                     </div>
@@ -65,22 +79,22 @@ export default function Home(){
                             })
                         }
                     </div>
-                    <button className={s.newFacha}>New Facha</button>
+                    <button className={s.newFacha} onClick={openNew} >New Facha</button>
                 </div>
 
                 <div className={s.diaContainer}>
                     <h3 className={s.diaTitle}>Nuevo Día</h3>
                     <p className={s.date}>{handleDate()}</p>
-                    <button className={s.newDia}>Crear</button>
+                    <button className={s.newDia} onClick={()=>Navigate("/NewDay")}>Crear</button>
                 </div>
 
             </div>
 
-            <Modal>
+            <ModalFacha>
                 <Transition>
                     <div className={s.modalContainer}>
                         <div className={s.buttonContainer}>
-                            <button className={s.closeModal} onClick={close}>X</button>
+                            <BsXSquareFill className={s.closeModal} onClick={closeFacha}/>
                         </div>
 
                         <div className={s.fachaInfo}>
@@ -95,7 +109,21 @@ export default function Home(){
                         <button className={s.editBtn}>Editar Foto</button>
                     </div>
                 </Transition>
-            </Modal>
+            </ModalFacha>
+
+            <ModalNew>
+                <Transition>
+                    <div className={s.modalContainer}>
+                        <div className={s.newFachaData}>
+                            <h3 className={s.newFachaTitle}>Nuevo Facha</h3>
+                            <form className={s.form} onSubmit={handleSubmit}>
+                                <input className={s.newFachaInput} placeholder='Nombre...' onChange={(e)=>setNewFacha(e.target.value)} />
+                                <button className={s.newFachaBtn} type='submit' >Agregar</button>
+                            </form>
+                        </div>
+                    </div>
+                </Transition>
+            </ModalNew>
 
         </div>
     )

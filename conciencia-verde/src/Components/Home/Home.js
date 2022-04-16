@@ -52,13 +52,13 @@ export default function Home(){
                     <div className={s.statsData}>
                         <div className={s.bags}>
                             <div className={s.circleBags} style={{backgroundImage: `url(${circle})`}}>
-                                <CountUp duration={4} useEasing={true} className={s.counter} end={69} />
+                                <CountUp duration={3} useEasing={true} className={s.counter} end={69} />
                             </div>
                             <p className={s.statsLabel}>Bolsas de basura desechadas</p>
                         </div>
                         <div className={s.kg}>
                             <div className={s.circleBags} style={{backgroundImage: `url(${circle})`}}>
-                                <CountUp duration={4} useEasing={true} className={s.counter} end={420} />
+                                <CountUp duration={3} useEasing={true} className={s.counter} end={420} />
                             </div>
                             <p className={s.statsLabel}>Kilos de basura sacados del mar</p>
                         </div>
@@ -71,7 +71,7 @@ export default function Home(){
                         {
                             fachas?.map((f,i) => {
                                 return (
-                                    <div className={s.facha} onClick={()=>{setSelected(i); openFacha();}}>
+                                    <div className={s.facha} onClick={()=>{setSelected(i); openFacha();}} key={f.name}>
                                         <p className={s.fachaName}>{f.name}</p>
                                         <p className={s.fachaKg}>{f.kg} Kg</p>
                                     </div>

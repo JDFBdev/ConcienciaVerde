@@ -81,73 +81,79 @@ export default function NewDay(){
 
             <div className={s.dataContainer}>
 
-                <div className={s.fachasContainer}>
-                    <h3 className={s.fachasTitle}>Fachas</h3>
-                    <div className={s.fachas}>
-                        {
-                            fachas.all?.map((f,i) => {
-                                return (
-                                    <Transition key={f.name}>
-                                        <div className={s.facha} >
-                                            <p className={s.fachaName}>{f.name}</p>
-                                            <BsPlusSquareFill className={s.addFacha} onClick={()=>addFacha(i)}/>
-                                        </div>
-                                    </Transition>
-                                )
-                            })
-                        }
-                        <div className={s.line} />
-                        <h3 className={s.fachasTitle}>Fachas Hoy</h3>
-                        {
-                            fachas.hoy?.map((f,i) => {
-                                return (
-                                    <Transition key={f.name}>
-                                        <div className={s.facha} >
-                                            <p className={s.fachaName}>{f.name}</p>
-                                            <BsXSquareFill className={s.removeFacha} onClick={()=>removeFacha(i)}/>
-                                        </div>
-                                    </Transition>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
-
-                <div className={s.bolsasContainer}>
-                    <h3 className={s.bolsasTitle}>Bolsas</h3>
-                    <div className={s.bolsas}>
-                        {
-                            bolsas?.map((f,i) => {
-                                return (
-                                    <Transition key={f}>
-                                        <div className={s.bolsa} onClick={()=>{ setSelected({id: i+1 , kg: f}); open();}}  >
-                                            <p className={s.bolsaName}>Bolsa {i+1}</p>
-                                            <p className={s.bolsaName}>{f}</p>
-                                        </div>
-                                    </Transition>
-                                )
-                            })
-                        }
-                        <div className={s.bolsaForm}>
-                            <form className={s.form} onSubmit={handleSubmit}>
-                                <div className={s.newBolsaDiv}>
-                                    <p className={s.bolsaName}>Bolsa {bolsas?.length+1}</p>
-                                    <input className={s.bolsaInput} onChange={handleBolsa} value={newBolsa} type='number'/>
-                                </div>
-                                <button className={s.bolsaBtn}>Agregar</button>
-                            </form>
+                <Transition>
+                    <div className={s.fachasContainer}>
+                        <h3 className={s.fachasTitle}>Fachas</h3>
+                        <div className={s.fachas}>
+                            {
+                                fachas.all?.map((f,i) => {
+                                    return (
+                                        <Transition key={f.name}>
+                                            <div className={s.facha} >
+                                                <p className={s.fachaName}>{f.name}</p>
+                                                <BsPlusSquareFill className={s.addFacha} onClick={()=>addFacha(i)}/>
+                                            </div>
+                                        </Transition>
+                                    )
+                                })
+                            }
+                            <div className={s.line} />
+                            <h3 className={s.fachasTitle}>Fachas Hoy</h3>
+                            {
+                                fachas.hoy?.map((f,i) => {
+                                    return (
+                                        <Transition key={f.name}>
+                                            <div className={s.facha} >
+                                                <p className={s.fachaName}>{f.name}</p>
+                                                <BsXSquareFill className={s.removeFacha} onClick={()=>removeFacha(i)}/>
+                                            </div>
+                                        </Transition>
+                                    )
+                                })
+                            }
                         </div>
                     </div>
-                </div>
+                </Transition>
 
-                <div className={s.resumenContainer}>
-                    <h3 className={s.resumenTitle}>Resumen</h3>
-                    <p className={s.data}>{handleDate()}</p>
-                    <p className={s.data}>{fachas.hoy.length} Fachas</p>
-                    <p className={s.data}>{bolsas?.length} Bolsas</p>
-                    <p className={s.data}>Total: {handleKg()} Kg</p>
-                    <button className={ (fachas.hoy.length && bolsas.length) ? s.confirmBtn : s.confirmBtnError}>Confirmar</button>
-                </div>
+                <Transition timeout={100}>
+                    <div className={s.bolsasContainer}>
+                        <h3 className={s.bolsasTitle}>Bolsas</h3>
+                        <div className={s.bolsas}>
+                            {
+                                bolsas?.map((f,i) => {
+                                    return (
+                                        <Transition key={f}>
+                                            <div className={s.bolsa} onClick={()=>{ setSelected({id: i+1 , kg: f}); open();}}  >
+                                                <p className={s.bolsaName}>Bolsa {i+1}</p>
+                                                <p className={s.bolsaName}>{f}</p>
+                                            </div>
+                                        </Transition>
+                                    )
+                                })
+                            }
+                            <div className={s.bolsaForm}>
+                                <form className={s.form} onSubmit={handleSubmit}>
+                                    <div className={s.newBolsaDiv}>
+                                        <p className={s.bolsaName}>Bolsa {bolsas?.length+1}</p>
+                                        <input className={s.bolsaInput} onChange={handleBolsa} value={newBolsa} type='number'/>
+                                    </div>
+                                    <button className={s.bolsaBtn}>Agregar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </Transition>
+
+                <Transition timeout={200}>
+                    <div className={s.resumenContainer}>
+                        <h3 className={s.resumenTitle}>Resumen</h3>
+                        <p className={s.data}>{handleDate()}</p>
+                        <p className={s.data}>{fachas.hoy.length} Fachas</p>
+                        <p className={s.data}>{bolsas?.length} Bolsas</p>
+                        <p className={s.data}>Total: {handleKg()} Kg</p>
+                        <button className={ (fachas.hoy.length && bolsas.length) ? s.confirmBtn : s.confirmBtnError}>Confirmar</button>
+                    </div>
+                </Transition>
 
             </div>
 

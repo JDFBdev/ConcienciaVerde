@@ -47,46 +47,52 @@ export default function Home(){
 
             <div className={s.dataContainer}>
 
-                <div className={s.stats}>
-                    <h3 className={s.statsTitle}>Estadisticas</h3>
-                    <div className={s.statsData}>
-                        <div className={s.bags}>
-                            <div className={s.circleBags} style={{backgroundImage: `url(${circle})`}}>
-                                <CountUp duration={3} useEasing={true} className={s.counter} end={69} />
+                <Transition>
+                    <div className={s.stats}>
+                        <h3 className={s.statsTitle}>Estadisticas</h3>
+                        <div className={s.statsData}>
+                            <div className={s.bags}>
+                                <div className={s.circleBags} style={{backgroundImage: `url(${circle})`}}>
+                                    <CountUp duration={3} useEasing={true} className={s.counter} end={69} />
+                                </div>
+                                <p className={s.statsLabel}>Bolsas de basura desechadas</p>
                             </div>
-                            <p className={s.statsLabel}>Bolsas de basura desechadas</p>
-                        </div>
-                        <div className={s.kg}>
-                            <div className={s.circleBags} style={{backgroundImage: `url(${circle})`}}>
-                                <CountUp duration={3} useEasing={true} className={s.counter} end={420} />
+                            <div className={s.kg}>
+                                <div className={s.circleBags} style={{backgroundImage: `url(${circle})`}}>
+                                    <CountUp duration={3} useEasing={true} className={s.counter} end={420} />
+                                </div>
+                                <p className={s.statsLabel}>Kilos de basura sacados del mar</p>
                             </div>
-                            <p className={s.statsLabel}>Kilos de basura sacados del mar</p>
                         </div>
                     </div>
-                </div>
+                </Transition>
 
-                <div className={s.fachasContainer}>
-                    <h3 className={s.fachasTitle}>Fachas</h3>
-                    <div className={s.fachas}>
-                        {
-                            fachas?.map((f,i) => {
-                                return (
-                                    <div className={s.facha} onClick={()=>{setSelected(i); openFacha();}} key={f.name}>
-                                        <p className={s.fachaName}>{f.name}</p>
-                                        <p className={s.fachaKg}>{f.kg} Kg</p>
-                                    </div>
-                                )
-                            })
-                        }
+                <Transition timeout={100}>
+                    <div className={s.fachasContainer}>
+                        <h3 className={s.fachasTitle}>Fachas</h3>
+                        <div className={s.fachas}>
+                            {
+                                fachas?.map((f,i) => {
+                                    return (
+                                        <div className={s.facha} onClick={()=>{setSelected(i); openFacha();}} key={f.name}>
+                                            <p className={s.fachaName}>{f.name}</p>
+                                            <p className={s.fachaKg}>{f.kg} Kg</p>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                        <button className={s.newFacha} onClick={openNew} >New Facha</button>
                     </div>
-                    <button className={s.newFacha} onClick={openNew} >New Facha</button>
-                </div>
+                </Transition>
 
-                <div className={s.diaContainer}>
-                    <h3 className={s.diaTitle}>Nuevo Día</h3>
-                    <p className={s.date}>{handleDate()}</p>
-                    <button className={s.newDia} onClick={()=>Navigate("/NewDay")}>Crear</button>
-                </div>
+                <Transition timeout={200}>
+                    <div className={s.diaContainer}>
+                        <h3 className={s.diaTitle}>Nuevo Día</h3>
+                        <p className={s.date}>{handleDate()}</p>
+                        <button className={s.newDia} onClick={()=>Navigate("/NewDay")}>Crear</button>
+                    </div>
+                </Transition>
 
             </div>
 

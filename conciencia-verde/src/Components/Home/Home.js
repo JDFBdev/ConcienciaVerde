@@ -53,13 +53,13 @@ export default function Home({show}){
                         <div className={s.statsData}>
                             <div className={s.bags}>
                                 <div className={s.circleBags} style={{backgroundImage: `url(${circle})`}}>
-                                    <CountUp duration={3} useEasing={true} className={s.counter} end={69} />
+                                    <CountUp duration={3} useEasing={true} className={s.counter} end={69} delay={show ? 3 : 0} />
                                 </div>
                                 <p className={s.statsLabel}>Bolsas de basura desechadas</p>
                             </div>
                             <div className={s.kg}>
                                 <div className={s.circleBags} style={{backgroundImage: `url(${circle})`}}>
-                                    <CountUp duration={3} useEasing={true} className={s.counter} end={420} />
+                                    <CountUp duration={3} useEasing={true} className={s.counter} end={420} delay={show ? 3 : 0} />
                                 </div>
                                 <p className={s.statsLabel}>Kilos de basura sacados del mar</p>
                             </div>

@@ -125,7 +125,7 @@ export default function NewDay(){
                                         <Transition key={f}>
                                             <div className={s.bolsa} onClick={()=>{ setSelected({id: i+1 , kg: f}); open();}}  >
                                                 <p className={s.bolsaName}>Bolsa {i+1}</p>
-                                                <p className={s.bolsaName}>{f}</p>
+                                                <p className={s.bolsaName}>{f} Kg</p>
                                             </div>
                                         </Transition>
                                     )

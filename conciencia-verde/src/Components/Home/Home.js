@@ -9,7 +9,7 @@ import { BsXSquareFill } from 'react-icons/bs';
 import {useNavigate} from 'react-router-dom';
 import toast from "react-hot-toast";
 
-export default function Home(){
+export default function Home({show}){
     const [fachas, setFachas] = useState([{name: 'Maga', kg: 22},{name: 'Juan', kg: 16},{name: 'Santi', kg: 47},{name: 'Fran', kg: 469}]);
     const [selected, setSelected] = useState(0);
     const [newFacha, setNewFacha] = useState('');
@@ -32,7 +32,7 @@ export default function Home(){
     }
     
     return(
-        <div className={s.container}>
+        <div className={s.container} style={{display: show ? 'none' : ""}}>
 
             <div className={s.banner}>
                 <div className={s.circle1}/>
@@ -47,7 +47,7 @@ export default function Home(){
 
             <div className={s.dataContainer}>
 
-                <Transition>
+                <Transition timeout={show ? 3100 : 0}>
                     <div className={s.stats}>
                         <h3 className={s.statsTitle}>Estadisticas</h3>
                         <div className={s.statsData}>
@@ -67,7 +67,7 @@ export default function Home(){
                     </div>
                 </Transition>
 
-                <Transition timeout={100}>
+                <Transition timeout={show ? 3200 : 0}>
                     <div className={s.fachasContainer}>
                         <h3 className={s.fachasTitle}>Fachas</h3>
                         <div className={s.fachas}>
@@ -86,7 +86,7 @@ export default function Home(){
                     </div>
                 </Transition>
 
-                <Transition timeout={200}>
+                <Transition timeout={show ? 3300 : 0}>
                     <div className={s.diaContainer}>
                         <h3 className={s.diaTitle}>Nuevo Día</h3>
                         <p className={s.date}>{handleDate()}</p>

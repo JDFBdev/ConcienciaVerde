@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './Home.module.css';
 import logo from '../../img/logo.png';
 import circle from '../../img/circle.png';
@@ -8,15 +8,25 @@ import Transition from '../Transition/Transition';
 import { BsXSquareFill } from 'react-icons/bs';
 import {useNavigate} from 'react-router-dom';
 import toast from "react-hot-toast";
+import axios from 'axios';
 
 export default function Home({show}){
-    const [fachas, setFachas] = useState([{name: 'Maga', kg: 22},{name: 'Juan', kg: 16},{name: 'Santi', kg: 47},{name: 'Fran', kg: 469}]);
+    const [fachas, setFachas] = useState([{username: '', kg: 0}]);
     const [selected, setSelected] = useState(0);
     const [newFacha, setNewFacha] = useState('');
     const Navigate = useNavigate();
 
     const [ModalFacha, openFacha, closeFacha] = useModal('root', {preventScroll: true,closeOnOverlayClick: true});
     const [ModalNew, openNew, closeNew] = useModal('root', {preventScroll: true, closeOnOverlayClick: true});
+
+    useEffect(()=>{
+        let fetchData = async function(){
+            let promesa = await axios.get('http://localhost:3001/allUsers')
+            let promesa2 = await axios.get('http://localhost:3001/allUsers')
+            setFachas(promesa.data);
+        }
+        fetchData();
+    },[])
 
     const handleDate = function(){
         let today = new Date();
@@ -25,9 +35,21 @@ export default function Home({show}){
 
     const handleSubmit = function(e){
         e.preventDefault();
-        setFachas(prev=> [...prev, {name: newFacha, kg: 0}]);
+
+        let postData = async function(){
+            let promesa = await axios.post('http://localhost:3001/createUser',
+                {
+                    username: newFacha,
+                    kg: 0
+                }
+            )
+            .then(toast.success(`${newFacha} agregadx`))
+            .catch(e=>{
+                toast.error(`Error al agregar a ${newFacha}`);
+            })
+        }
+        postData();
         closeNew();
-        toast.success(`${newFacha} agregadx`);
         setNewFacha('');
     }
     
@@ -74,8 +96,8 @@ export default function Home({show}){
                             {
                                 fachas?.map((f,i) => {
                                     return (
-                                        <div className={s.facha} onClick={()=>{setSelected(i); openFacha();}} key={f.name}>
-                                            <p className={s.fachaName}>{f.name}</p>
+                                        <div className={s.facha} onClick={()=>{setSelected(i); openFacha();}} key={f.username}>
+                                            <p className={s.fachaName}>{f.username}</p>
                                             <p className={s.fachaKg}>{f.kg} Kg</p>
                                         </div>
                                     )
@@ -105,10 +127,10 @@ export default function Home({show}){
 
                         <div className={s.fachaInfo}>
                             <div className={s.circleName}>
-                                    {fachas[selected].name.charAt(0).toUpperCase()}
+                                    {fachas[selected]?.username.charAt(0).toUpperCase()}
                             </div>
                             <div className={s.fachaTitleContainer}>
-                                <p className={s.fachaTitle}>{fachas[selected].name}</p>
+                                <p className={s.fachaTitle}>{fachas[selected].username}</p>
                             </div>
                         </div>
                         <p className={s.fachaTotal}>Total: {fachas[selected].kg} Kg</p>

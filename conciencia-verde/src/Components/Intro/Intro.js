@@ -11,6 +11,9 @@ export default function Intro({show}){
     }, []);
 
     return(
+    <>
+        {
+        show && 
         <div className={s.container} style={{display: show ? "flex" : 'none'}}>
             <CSSTransition
             in={on}
@@ -23,5 +26,8 @@ export default function Intro({show}){
                 <img src={logo} alt='logo' className={s.logo}/>
             </CSSTransition>
         </div>
+        }
+    </>
+
     )
 }

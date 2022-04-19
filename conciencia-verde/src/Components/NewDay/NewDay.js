@@ -1,26 +1,38 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import s from './NewDay.module.css';
 import { BsXSquareFill, BsPlusSquareFill } from 'react-icons/bs';
 import Transition from '../Transition/Transition';
 import { useModal } from 'react-hooks-use-modal';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import {useNavigate} from 'react-router-dom';
+
 
 export default function NewDay(){
-    const [fachas, setFachas] = useState({all: [{name: 'Maga', kg: 22},{name: 'Juan', kg: 16},{name: 'Santi', kg: 47},{name: 'Fran', kg: 469}], hoy: []});
+    const [fachas, setFachas] = useState({all: [], hoy: []});
     const [bolsas, setBolsas] = useState([])
     const [newBolsa, setNewBolsa] = useState('');
     const [selected, setSelected] = useState({})
 
     const [Modal, open, close] = useModal('root', {preventScroll: true, closeOnOverlayClick: true});
 
-    const addFacha = function(i){
+    const Navigate = useNavigate();
 
+    useEffect(()=>{
+        let fetchData = async function(){
+            let promesa = await axios.get('http://localhost:3001/allUsers')
+            setFachas(prev=>({...prev, all: promesa.data}));
+        }
+        fetchData();
+    },[])
+
+    const addFacha = function(i){
         setFachas((prev)=>({
             hoy: [...prev.hoy, prev.all[i]],
             all: prev.all.filter((f,index)=>{
                 return index !== i;
             })
         }))
-
     }
 
     const removeFacha = function(i){
@@ -36,7 +48,7 @@ export default function NewDay(){
         setNewBolsa(e.target.value);
     }
 
-    const handleSubmit = function(e){
+    const handleBolsaSubmit = function(e){
         e.preventDefault();
         if (newBolsa){
             setBolsas(prev=>([...prev, newBolsa]))
@@ -66,6 +78,30 @@ export default function NewDay(){
         return total;
     }
 
+    const handleSubmit = function(e){
+        e.preventDefault();
+
+        let postData = async function(){
+            let arr = fachas.hoy.map((f)=>{
+                return f.username;
+            })
+
+             await axios.post('http://localhost:3001/createDay',
+                {
+                    usernames : arr,
+                    bolsas: bolsas
+                }
+            )
+            .then(toast.success(`Día registrado correctamente.`))
+            .catch(e=>{
+                toast.error(`Error al registrar día`);
+            })
+        }
+        postData();
+
+        Navigate("/")
+    }
+
     return(
         <div className={s.container}>
 
@@ -88,9 +124,9 @@ export default function NewDay(){
                             {
                                 fachas.all?.map((f,i) => {
                                     return (
-                                        <Transition key={f.name}>
+                                        <Transition key={f.username}>
                                             <div className={s.facha} >
-                                                <p className={s.fachaName}>{f.name}</p>
+                                                <p className={s.fachaName}>{f.username}</p>
                                                 <BsPlusSquareFill className={s.addFacha} onClick={()=>addFacha(i)}/>
                                             </div>
                                         </Transition>
@@ -102,9 +138,9 @@ export default function NewDay(){
                             {
                                 fachas.hoy?.map((f,i) => {
                                     return (
-                                        <Transition key={f.name}>
+                                        <Transition key={f.username}>
                                             <div className={s.facha} >
-                                                <p className={s.fachaName}>{f.name}</p>
+                                                <p className={s.fachaName}>{f.username}</p>
                                                 <BsXSquareFill className={s.removeFacha} onClick={()=>removeFacha(i)}/>
                                             </div>
                                         </Transition>
@@ -132,7 +168,7 @@ export default function NewDay(){
                                 })
                             }
                             <div className={s.bolsaForm}>
-                                <form className={s.form} onSubmit={handleSubmit}>
+                                <form className={s.form} onSubmit={handleBolsaSubmit}>
                                     <div className={s.newBolsaDiv}>
                                         <p className={s.bolsaName}>Bolsa {bolsas?.length+1}</p>
                                         <input className={s.bolsaInput} onChange={handleBolsa} value={newBolsa} type='number'/>
@@ -151,7 +187,11 @@ export default function NewDay(){
                         <p className={s.data}>{fachas.hoy.length} Fachas</p>
                         <p className={s.data}>{bolsas?.length} Bolsas</p>
                         <p className={s.data}>Total: {handleKg()} Kg</p>
-                        <button className={ (fachas.hoy.length && bolsas.length) ? s.confirmBtn : s.confirmBtnError}>Confirmar</button>
+                        {
+                            (fachas.hoy.length && bolsas.length) ? 
+                            <button className={s.confirmBtn} onClick={handleSubmit}>Confirmar</button> : 
+                            <button className={s.confirmBtnError} >Confirmar</button>
+                        }
                     </div>
                 </Transition>
 

@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const db = require('../db');
 
 const Users = db.define('days', {
-  fachas: {
+  users: {
     type: DataTypes.INTEGER,
     allowNull: false
   },
@@ -15,9 +15,11 @@ const Users = db.define('days', {
     allowNull: false
   },
   fecha: {
-    type: DataTypes.DATE,
+    type: DataTypes.STRING,
     allowNull: false
   }
 })
+
+Users.sync({ force: false });
 
 module.exports = Users;

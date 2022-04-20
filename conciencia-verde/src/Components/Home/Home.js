@@ -22,11 +22,11 @@ export default function Home({show}){
 
     useEffect(()=>{
         let fetchData = async function(){
-            await Promise.all([axios.get('http://localhost:3001/allUsers'), axios.get('http://localhost:3001/allDays') ])
-            .then(values=>{
-                setFachas(values[0].data);
-                setStats(values[1].data)
-            })
+            let promise = await axios.get('http://localhost:3001/allDays');
+
+            setFachas(promise.data.users);
+            setStats(promise.data.days)
+
         }
         fetchData();
     },[])

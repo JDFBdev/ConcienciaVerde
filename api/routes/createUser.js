@@ -4,11 +4,11 @@ const db = require('../db');
 const Users = require('../models/users')
 
 router.post('/', async (req, res) => {
-    let {username, kg} = req.body;
+    let {username} = req.body;
     try {
         let user = await Users.create({
             username,
-            kg
+            kg : 0
         })
         res.send(`${username} registrado correctamente`);
     }

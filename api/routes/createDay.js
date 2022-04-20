@@ -6,12 +6,19 @@ const Days = require('../models/days')
 const Users = require('../models/users')
 
 router.post('/', async (req, res) => {
-    let {usernames, bolsas} = req.body;
+    let {usernames, bolsas, kgTotal, kgPersona} = req.body;
     let kg = 0;
+    let kgPorPersona = Math.ceil(kg / usernames.length)
     let today = new Date();
+
     for (let i=0; i < bolsas.length; i++) {
         kg += bolsas[i];
     }
+
+    if ((kg !== kgTotal) || (kgPorPersona !== kgPersona)) {
+        return res.sendStatus(500).send({message: "Error registrando nuevo dia"});
+    }
+    
     try {
         let day = await Days.create({
             users : usernames.length,
@@ -25,7 +32,6 @@ router.post('/', async (req, res) => {
         res.sendStatus(500).send({message: "Error registrando nuevo dia"});
     }
 
-    let kgPorPersona = Math.ceil(kg / usernames.length)
     let fachas = []
     try {
         fachas = await Users.findAll({

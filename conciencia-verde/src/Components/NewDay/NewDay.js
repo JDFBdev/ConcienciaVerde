@@ -51,7 +51,7 @@ export default function NewDay(){
     const handleBolsaSubmit = function(e){
         e.preventDefault();
         if (newBolsa){
-            setBolsas(prev=>([...prev, newBolsa]))
+            setBolsas(prev=>([...prev, Number(newBolsa)]))
             setNewBolsa('');
         }
     }
@@ -81,15 +81,24 @@ export default function NewDay(){
     const handleSubmit = function(e){
         e.preventDefault();
 
-        let postData = async function(){
-            let arr = fachas.hoy.map((f)=>{
-                return f.username;
-            })
+        let kg= 0;
+        for (let i=0; i < bolsas.length; i++) {
+            kg += bolsas[i];
+        }
 
-             await axios.post('http://localhost:3001/createDay',
+        let arr = fachas.hoy.map((f)=>{
+            return f.username;
+        })
+
+        let kgPorPersona = Math.ceil(kg / arr.length)
+
+        let postData = async function(){
+            await axios.post('http://localhost:3001/createDay',
                 {
                     usernames : arr,
-                    bolsas: bolsas
+                    bolsas: bolsas,
+                    kgTotal: kg,
+                    kgPersona: kgPorPersona
                 }
             )
             .then(toast.success(`Día registrado correctamente.`))

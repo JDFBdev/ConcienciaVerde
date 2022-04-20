@@ -7,7 +7,7 @@ export default function Intro({show}){
     const [on, setOn] = useState(true);
   
     useEffect(() => {
-      setTimeout(() => setOn(false), 2000);
+      setTimeout(() => setOn(false), 3000);
     }, []);
 
     return(

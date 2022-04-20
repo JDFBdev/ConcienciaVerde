@@ -90,7 +90,7 @@ export default function NewDay(){
             return f.username;
         })
 
-        let kgPorPersona = Math.ceil(kg / arr.length)
+        let kgPorPersona = Math.round(kg / arr.length)
 
         let postData = async function(){
             await axios.post('http://localhost:3001/createDay',
@@ -108,7 +108,7 @@ export default function NewDay(){
         }
         postData();
 
-        Navigate("/")
+        setTimeout(()=>Navigate("/"), 2000);
     }
 
     return(

@@ -7,15 +7,17 @@ const Users = require('../models/users')
 
 router.post('/', async (req, res) => {
     let {usernames, bolsas, kgTotal, kgPersona} = req.body;
-    let kg = 0;
-    let kgPorPersona = Math.ceil(kg / usernames.length)
     let today = new Date();
-
+    let kg = 0;
+    
     for (let i=0; i < bolsas.length; i++) {
         kg += bolsas[i];
     }
 
-    if ((kg !== kgTotal) || (kgPorPersona !== kgPersona)) {
+    let kgPorPersona = Math.round(kg / usernames.length)
+
+    if ((Number(kg) !== Number(kgTotal)) || (Number(kgPorPersona) !== Number(kgPersona))) {
+        console.log(kg, kgTotal, kgPersona, kgPorPersona);
         return res.sendStatus(500).send({message: "Error registrando nuevo dia"});
     }
     

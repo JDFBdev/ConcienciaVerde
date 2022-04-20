@@ -6,12 +6,19 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { Toaster } from "react-hot-toast";
 import Scroll from './Components/Scroll/Scroll';
 import Intro from './Components/Intro/Intro';
+import axios from 'axios';
 
 export default function App() {
   const [on, setOn] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => setOn(false), 3000);
+    
+    let fetchData = async function(){
+      await axios.get('http://localhost:3001/')
+    }
+    fetchData();
+
+    setTimeout(() => setOn(false), 4000);
   }, []);
 
   return (

@@ -13,7 +13,7 @@ import axios from 'axios';
 export default function Home({show}){
     const [stats, setStats] = useState({});
     const [fachas, setFachas] = useState([{username: '', kg: 0}]);
-    const [selected, setSelected] = useState(0);
+    const [selected, setSelected] = useState({username: '', kg: 0});
     const [newFacha, setNewFacha] = useState('');
     const Navigate = useNavigate();
 
@@ -40,13 +40,13 @@ export default function Home({show}){
         e.preventDefault();
 
         let postData = async function(){
-            let promesa = await axios.post('http://localhost:3001/createUser',
+            await axios.post('http://localhost:3001/createUser',
                 {
                     username: newFacha,
                     kg: 0
                 }
             )
-            .then(toast.success(`${newFacha} agregadx`))
+            .then(toast.success(`${newFacha} agregadx correctamente.`))
             .catch(e=>{
                 toast.error(`Error al agregar a ${newFacha}`);
             })
@@ -63,6 +63,8 @@ export default function Home({show}){
         setNewFacha('');
     }
     
+    console.log(selected)
+
     return(
         <>
             {
@@ -109,7 +111,7 @@ export default function Home({show}){
                                 {
                                     fachas?.map((f,i) => {
                                         return (
-                                            <div className={s.facha} onClick={()=>{setSelected(i); openFacha();}} key={f.username}>
+                                            <div className={s.facha} onClick={()=>{setSelected(f); openFacha();}} key={f.username}>
                                                 <p className={s.fachaName}>{f.username}</p>
                                                 <p className={s.fachaKg}>{f.kg} Kg</p>
                                             </div>
@@ -140,13 +142,13 @@ export default function Home({show}){
 
                             <div className={s.fachaInfo}>
                                 <div className={s.circleName}>
-                                        {fachas[selected]?.username.charAt(0).toUpperCase()}
+                                        {selected.username.charAt(0).toUpperCase()}
                                 </div>
                                 <div className={s.fachaTitleContainer}>
-                                    <p className={s.fachaTitle}>{fachas[selected].username}</p>
+                                    <p className={s.fachaTitle}>{selected.username}</p>
                                 </div>
                             </div>
-                            <p className={s.fachaTotal}>Total: {fachas[selected].kg} Kg</p>
+                            <p className={s.fachaTotal}>Total: {selected.kg} Kg</p>
                             <button className={s.editBtn}>Editar Foto</button>
                         </div>
                     </Transition>

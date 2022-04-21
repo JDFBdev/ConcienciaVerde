@@ -22,7 +22,7 @@ export default function Home({show}){
 
     useEffect(()=>{
         let fetchData = async function(){
-            let promise = await axios.get('http://localhost:3001/allDays');
+            let promise = await axios.get('https://concienciaserver.herokuapp.com/allDays');
 
             setFachas(promise.data.users);
             setStats(promise.data.days)
@@ -40,7 +40,7 @@ export default function Home({show}){
         e.preventDefault();
 
         let postData = async function(){
-            await axios.post('http://localhost:3001/createUser',
+            await axios.post('https://concienciaserver.herokuapp.com/createUser',
                 {
                     username: newFacha,
                     kg: 0
@@ -54,7 +54,7 @@ export default function Home({show}){
         postData();
 
         let fetchData = async function(){
-            let promesa = await axios.get('http://localhost:3001/allUsers')
+            let promesa = await axios.get('https://concienciaserver.herokuapp.com/allUsers')
             setFachas(promesa.data);
         }
         setTimeout(fetchData, 2000);

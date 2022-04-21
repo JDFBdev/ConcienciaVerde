@@ -20,7 +20,7 @@ export default function NewDay(){
 
     useEffect(()=>{
         let fetchData = async function(){
-            let promesa = await axios.get('http://localhost:3001/allUsers')
+            let promesa = await axios.get('https://concienciaserver.herokuapp.com/allUsers')
             setFachas(prev=>({...prev, all: promesa.data}));
         }
         fetchData();
@@ -93,7 +93,7 @@ export default function NewDay(){
         let kgPorPersona = Math.round(kg / arr.length)
 
         let postData = async function(){
-            await axios.post('http://localhost:3001/createDay',
+            await axios.post('https://concienciaserver.herokuapp.com/createDay',
                 {
                     usernames : arr,
                     bolsas: bolsas,

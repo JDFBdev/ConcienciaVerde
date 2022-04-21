@@ -14,7 +14,7 @@ export default function App() {
   useEffect(() => {
     
     let fetchData = async function(){
-      await axios.get('http://localhost:3001/')
+      await axios.get('https://concienciaserver.herokuapp.com/')
     }
     fetchData();
 

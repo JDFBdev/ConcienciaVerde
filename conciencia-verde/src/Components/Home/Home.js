@@ -161,7 +161,11 @@ export default function Home({show}){
                                 <h3 className={s.newFachaTitle}>Nuevo Facha</h3>
                                 <form className={s.form} onSubmit={handleSubmit}>
                                     <input className={s.newFachaInput} placeholder='Nombre...' onChange={(e)=>setNewFacha(e.target.value)} />
-                                    <button className={s.newFachaBtn} type='submit' >Agregar</button>
+                                    {
+                                        newFacha !== '' ?
+                                        <button className={s.newFachaBtn} type='submit' >Agregar</button> : 
+                                        <button className={s.newFachaBtnError}>Agregar</button>
+                                    }
                                 </form>
                             </div>
                         </div>

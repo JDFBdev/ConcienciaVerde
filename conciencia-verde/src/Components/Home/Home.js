@@ -20,7 +20,7 @@ export default function Home({show}){
     const [ModalFacha, openFacha, closeFacha] = useModal('root', {preventScroll: true,closeOnOverlayClick: true});
     const [ModalNew, openNew, closeNew] = useModal('root', {preventScroll: true, closeOnOverlayClick: true});
 
-    useEffect(()=>{
+    useEffect((show)=>{
         let fetchData = async function(){
             let promise = await axios.get('https://concienciaserver.herokuapp.com/allDays');
 
@@ -29,6 +29,10 @@ export default function Home({show}){
 
         }
         fetchData();
+
+        if(!show){
+            setTimeout(fetchData, 1500);
+        }
     },[])
 
     const handleDate = function(){
@@ -62,8 +66,6 @@ export default function Home({show}){
         closeNew();
         setNewFacha('');
     }
-    
-    console.log(selected)
 
     return(
         <>

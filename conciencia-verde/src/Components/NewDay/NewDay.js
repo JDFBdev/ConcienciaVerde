@@ -108,7 +108,7 @@ export default function NewDay(){
         }
         postData();
 
-        setTimeout(()=>Navigate("/"), 2000);
+        Navigate("/")
     }
 
     return(
@@ -211,7 +211,7 @@ export default function NewDay(){
                     <div className={s.modalContainer}>
                         <h3 className={s.deleteBolsaTitle}>Bolsa {selected.id}</h3>
                         <p className={s.data}>{selected.kg} Kg</p>
-                        <button className={s.deleteBolsaBtn} onClick={deleteBolsa} >Borrar</button>
+                        <button className={s.deleteBolsaBtn} onClick={deleteBolsa} >Eliminar</button>
                     </div>
                 </Transition>
             </Modal>

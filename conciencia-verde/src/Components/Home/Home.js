@@ -166,7 +166,7 @@ export default function Home({show}){
                                     {
                                         newFacha !== '' ?
                                         <button className={s.newFachaBtn} type='submit' >Agregar</button> : 
-                                        <button className={s.newFachaBtnError}>Agregar</button>
+                                        <button className={s.newFachaBtnError} type='button' onClick={()=>{}} >Agregar</button>
                                     }
                                 </form>
                             </div>
